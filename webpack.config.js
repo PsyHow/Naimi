@@ -14,6 +14,8 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js', '.scss'],
     alias: {
       components: path.resolve(__dirname, './src/components'),
+      store: path.resolve(__dirname, './src/store'),
+      consts: path.resolve(__dirname, './src/consts'),
     },
   },
   output: {

@@ -1,9 +1,88 @@
 .container {
-    width: 100%;
+    width: 100vw;
     height: 100%;
     flex-direction: column;
 
-    .description {
+    .header {
         min-height: 65px;
+        display: flex;
+        align-items: center;
+        margin: 0 16px;
+    }
+
+    & span {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    & span:first-child{
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .descriptionBlock {
+        height: 128px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin: 0 16px;
+
+        .leftTitleBlock {
+            width: 20%;
+        }
+
+        & textarea {
+            width: 75%;
+            height: 100px;
+            resize: none;
+            padding: 10px 16px;
+            border: 1px solid #C7C7C7;
+            border-radius: 4px;
+        }
+    }
+    
+    .citySelect {
+        width: 100%;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        margin: 0 16px;
+
+        .leftTitleBlock {
+            width: 20%;
+        }
+
+        & select {
+            width: 77.5%;
+            height: 40px;
+            border: 1px solid #C7C7C7;
+            border-radius: 4px;
+            padding: 2px;
+            padding: 10px 16px;
+        }
+    }
+
+    .callMethod {
+        width: 100%;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        margin: 0 16px;
+
+        .leftTitleBlock {
+            width: 20%;
+        }
+
+        & select {
+            width: 77.5%;
+            height: 40px;
+            border: 1px solid #C7C7C7;
+            border-radius: 4px;
+            padding: 2px;
+            padding: 10px 16px;
+        }
     }
 }
