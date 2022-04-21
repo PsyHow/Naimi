@@ -30,23 +30,19 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.((c|sa|sc)ss)$/i,
         use: [
           'style-loader',
           {
             loader: 'css-loader',
             options: {
-              import: false,
-              modules: true,
+              importLoaders: 1,
             },
           },
+          {
+            loader: 'sass-loader',
+          },
         ],
-        include: /\.module\.scss$/,
-      },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        exclude: /\.module\.scss$/,
       },
       {
         test: /\.(jpeg|jpg|png|gif|svg)/,
