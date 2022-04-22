@@ -1,4 +1,4 @@
-import { ICity } from 'store/types';
+import { ICallMethod, ICity, IWorkUnit } from 'store/types';
 
 export const cities: ICity[] = [
   { id: 1, text: 'Алма-Ата' },
@@ -11,4 +11,15 @@ export const cities: ICity[] = [
   { id: 8, text: 'Семей' },
   { id: 9, text: 'Караганда' },
   { id: 10, text: 'Кызылорда' },
+];
+
+export const payMethod: IWorkUnit[] = [
+  { id: 1, text: 'За всю работу' },
+  { id: 2, text: 'За кв. метр' },
+  { id: 3, text: 'За час' },
+];
+
+export const callMethod: ICallMethod[] = [
+  { id: 0, text: 'Написать в чате' },
+  { id: 1, text: 'Позвонить' },
 ];

@@ -1,45 +1,69 @@
 import { ChangeEvent, FC, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './styles/service.module.scss';
 
-import { cities } from 'consts';
-import { changeCallMethod, selectCityApplication } from 'store/actions/service';
-import { ICity } from 'store/types';
+import { Select } from 'components/common/Select';
+import { callMethod, cities, payMethod } from 'consts';
+import { selectCallMethod, selectCity, selectWorkUnit } from 'selectors/serviceSelectors';
+import {
+  changeCallMethod,
+  changeWorkUnit,
+  selectCityApplication,
+} from 'store/actions/service';
+import { ICity, IWorkUnit } from 'store/types';
 
 export const Service: FC = () => {
   const dispatch = useDispatch();
 
-  const [citySelect, setCitySelect] = useState<ICity>({
-    id: 1,
-    text: 'Алма-Ата',
-  });
+  const city = useSelector(selectCity);
+  const pay = useSelector(selectWorkUnit);
+  const call = useSelector(selectCallMethod);
 
-  const [callSelect, setCallSelect] = useState<number>(1);
+  const [citySelect, setCitySelect] = useState<ICity>(city);
 
-  const handleCitySelectChange = (name: string, value: string): void => {
-    const newData = {
-      ...citySelect,
-      [name]: value,
-    };
+  const [paySelect, setPaySelect] = useState<IWorkUnit>(pay);
 
-    setCitySelect(newData);
-    dispatch(selectCityApplication(newData.id, newData.text));
-  };
+  const [callSelect, setCallSelect] = useState(call);
 
   const handleCityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    const option = event.target.value;
+    const id = +event.currentTarget.value;
+    const { text } = cities.filter(item => item.id === id)[0];
 
-    handleCitySelectChange('text', option);
+    setCitySelect({
+      id,
+      text,
+    });
+    dispatch(selectCityApplication({ id, text }));
+  };
+
+  const handlePayChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    const { value } = event.currentTarget;
+    const { text } = payMethod.filter(method => method.id === +value)[0];
+
+    setPaySelect({
+      id: +value,
+      text,
+    });
+
+    dispatch(changeWorkUnit({ id: +value, text }));
   };
 
   const handleCallChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    const option = event.target.value;
+    const option = +event.currentTarget.value;
 
-    setCallSelect(+option);
+    // setCallSelect(option);
+    console.log(!option, 'option');
+
+    console.log(callSelect, 'state');
+
+    setCallSelect(!option);
+
     dispatch(changeCallMethod(!option));
   };
+
+  // console.log(call);
 
   return (
     <div className={styles.container}>
@@ -58,24 +82,44 @@ export const Service: FC = () => {
         <div className={styles.leftTitleBlock}>
           <span>Город Заявки:</span>
         </div>
-        <select value={citySelect.text} onChange={handleCityChange}>
-          {cities.map(city => (
-            <option value={city.text} key={city.id}>
-              {city.text}
-            </option>
-          ))}
-        </select>
+        <Select value={citySelect.id} onChange={handleCityChange} options={cities} />
       </div>
       <hr />
       <div className={styles.callMethod}>
         <div className={styles.leftTitleBlock}>
           <span>Город Заявки:</span>
         </div>
-        <select defaultValue={callSelect} onChange={handleCallChange}>
-          <option value={0}>Написать в чате</option>
-          <option value={1}>Позвонить</option>
+        <select value={+callSelect} onChange={handleCallChange}>
+          {callMethod.map(item => (
+            <option key={item.id} value={item.id}>
+              {item.text}
+            </option>
+          ))}
         </select>
+        {/* <Select value={+callSelect} onChange={handleCallChange} options={callMethod} /> */}
       </div>
+      <hr />
+      <div className={styles.price}>
+        <div className={styles.leftTitleBlock}>
+          <span>Сколько готовы заплатить</span>
+        </div>
+        <div className={styles.selectPrice}>
+          <input />
+          <Select value={paySelect.id} onChange={handlePayChange} options={payMethod} />
+        </div>
+      </div>
+      <hr />
+      <div className={styles.requirements}>
+        <div className={styles.leftTitleBlock}>
+          <span>Требования к специалистам:</span>
+        </div>
+        <div className={styles.checkRequirements}>
+          <input type="checkbox" />
+          <input type="checkbox" />
+          <input type="checkbox" />
+        </div>
+      </div>
+      <hr />
     </div>
   );
 };

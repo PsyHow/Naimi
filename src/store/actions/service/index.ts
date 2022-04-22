@@ -1,1 +1,7 @@
-export { setDescptiption, selectCityApplication, changeCallMethod } from './service';
+export {
+  setDescptiption,
+  selectCityApplication,
+  changeCallMethod,
+  changeWorkUnit,
+  setPrice,
+} from './service';

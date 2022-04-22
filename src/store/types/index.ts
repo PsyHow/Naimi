@@ -21,4 +21,12 @@ export interface ICity {
   text: string;
 }
 
-export type IWorkUnit = 'За всю работу' | 'За кв. метр' | 'За час';
+export interface IWorkUnit {
+  id: number;
+  text: string;
+}
+
+export interface ICallMethod {
+  id: number;
+  text: string;
+}
