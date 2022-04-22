@@ -4,12 +4,25 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './styles/service.module.scss';
 
+import { Checkbox } from 'components/common/Checkbox';
 import { Select } from 'components/common/Select';
 import { callMethod, cities, payMethod } from 'consts';
-import { selectCallMethod, selectCity, selectWorkUnit } from 'selectors/serviceSelectors';
 import {
+  selectAddresses,
+  selectCallMethod,
+  selectCity,
+  selectHasPhoto,
+  selectHasReview,
+  selectIsVerified,
+  selectWorkUnit,
+} from 'selectors/serviceSelectors';
+import {
+  addAdress,
   changeCallMethod,
   changeWorkUnit,
+  hasPhoto,
+  hasReview,
+  isVerified,
   selectCityApplication,
 } from 'store/actions/service';
 import { ICity, IWorkUnit } from 'store/types';
@@ -20,12 +33,19 @@ export const Service: FC = () => {
   const city = useSelector(selectCity);
   const pay = useSelector(selectWorkUnit);
   const call = useSelector(selectCallMethod);
+  const photo = useSelector(selectHasPhoto);
+  const review = useSelector(selectHasReview);
+  const verified = useSelector(selectIsVerified);
+  const adresses = useSelector(selectAddresses);
 
   const [citySelect, setCitySelect] = useState<ICity>(city);
-
   const [paySelect, setPaySelect] = useState<IWorkUnit>(pay);
+  const [callSelect, setCallSelect] = useState<boolean>(call);
+  const [photoChecked, setPhotoCheked] = useState<boolean>(photo);
+  const [reviewChecked, setReviewChecked] = useState<boolean>(review);
+  const [verifiedChecked, setVerifiedChecked] = useState<boolean>(verified);
 
-  const [callSelect, setCallSelect] = useState(call);
+  console.log(call);
 
   const handleCityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     const id = +event.currentTarget.value;
@@ -53,17 +73,34 @@ export const Service: FC = () => {
   const handleCallChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     const option = +event.currentTarget.value;
 
-    // setCallSelect(option);
-    console.log(!option, 'option');
-
-    console.log(callSelect, 'state');
-
-    setCallSelect(!option);
-
-    dispatch(changeCallMethod(!option));
+    setCallSelect(prevState => !prevState);
+    dispatch(changeCallMethod(!!option));
   };
 
-  // console.log(call);
+  const handlePhotoCheckChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const option = event.currentTarget.checked;
+
+    setPhotoCheked(option);
+    dispatch(hasPhoto(option));
+  };
+
+  const handleReviewCheckChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const option = event.currentTarget.checked;
+
+    setReviewChecked(option);
+    dispatch(hasReview(option));
+  };
+
+  const handleVerifiedCheckChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const option = event.currentTarget.checked;
+
+    setVerifiedChecked(option);
+    dispatch(isVerified(option));
+  };
+
+  const handleAddAdressClick = (id: number): void => {
+    dispatch(addAdress({ city: { id: 1, text: 'Алма-Ата' }, address: 'sfasdfasdf', id }));
+  };
 
   return (
     <div className={styles.container}>
@@ -85,18 +122,34 @@ export const Service: FC = () => {
         <Select value={citySelect.id} onChange={handleCityChange} options={cities} />
       </div>
       <hr />
+      <div className={styles.adress}>
+        <div className={styles.leftTitleBlock}>
+          <span>Адрес:</span>
+        </div>
+        <div>
+          {adresses.map(adress => (
+            <div key={adress.id}>
+              <Select
+                value={adress.id}
+                onChange={handleCallChange}
+                options={callMethod}
+              />
+              <input value={adress.address} />
+            </div>
+          ))}
+          <div>
+            <button type="button" onClick={() => handleAddAdressClick(adresses.length)}>
+              sdfadf
+            </button>
+          </div>
+        </div>
+      </div>
+      <hr />
       <div className={styles.callMethod}>
         <div className={styles.leftTitleBlock}>
-          <span>Город Заявки:</span>
+          <span>Способ связи:</span>
         </div>
-        <select value={+callSelect} onChange={handleCallChange}>
-          {callMethod.map(item => (
-            <option key={item.id} value={item.id}>
-              {item.text}
-            </option>
-          ))}
-        </select>
-        {/* <Select value={+callSelect} onChange={handleCallChange} options={callMethod} /> */}
+        <Select value={+callSelect} onChange={handleCallChange} options={callMethod} />
       </div>
       <hr />
       <div className={styles.price}>
@@ -114,9 +167,21 @@ export const Service: FC = () => {
           <span>Требования к специалистам:</span>
         </div>
         <div className={styles.checkRequirements}>
-          <input type="checkbox" />
-          <input type="checkbox" />
-          <input type="checkbox" />
+          <Checkbox
+            checked={verifiedChecked}
+            onChange={handleVerifiedCheckChange}
+            label="Личность подтверждена"
+          />
+          <Checkbox
+            checked={photoChecked}
+            onChange={handlePhotoCheckChange}
+            label="С фото работ в анкете"
+          />
+          <Checkbox
+            checked={reviewChecked}
+            onChange={handleReviewCheckChange}
+            label="С отзывами"
+          />
         </div>
       </div>
       <hr />

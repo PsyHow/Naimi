@@ -60,6 +60,18 @@
         }
     }
 
+    .adress {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin: 0 16px;
+        
+        .leftTitleBlock {
+            width: 20%;
+        }
+    }
+
     .callMethod {
         width: 100%;
         height: 54px;

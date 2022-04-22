@@ -4,4 +4,8 @@ export {
   changeCallMethod,
   changeWorkUnit,
   setPrice,
+  hasPhoto,
+  hasReview,
+  isVerified,
+  addAdress,
 } from './service';

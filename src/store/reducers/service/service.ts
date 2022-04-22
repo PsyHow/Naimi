@@ -1,12 +1,12 @@
 import { cities, payMethod } from 'consts';
 import { ServiceTypes } from 'store/reducers/types';
-import { IAddress, ITicket } from 'store/types';
+import { ITicket } from 'store/types';
 
 const initialState = {
-  addresses: [] as IAddress[],
+  addresses: [],
   city: cities[0],
   description: '',
-  has_photo: false,
+  has_photo: true,
   has_review: false,
   call: true,
   price_to: null as number | null,
@@ -44,6 +44,30 @@ export const serviceReducer = (state = initialState, action: ServiceTypes): ITic
       return {
         ...state,
         work_unit: action.payload,
+      };
+    }
+    case 'SERVICE/HAS_PHOTO': {
+      return {
+        ...state,
+        has_photo: action.payload,
+      };
+    }
+    case 'SERVICE/HAS_REVIEW': {
+      return {
+        ...state,
+        has_review: action.payload,
+      };
+    }
+    case 'SERVICE/IS_VERIFIED': {
+      return {
+        ...state,
+        verified_only: action.payload,
+      };
+    }
+    case 'SERVICE/ADD_ADRESS': {
+      return {
+        ...state,
+        addresses: [...state.addresses, action.payload],
       };
     }
     default:
