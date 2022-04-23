@@ -45,8 +45,6 @@ export const Service: FC = () => {
   const [reviewChecked, setReviewChecked] = useState<boolean>(review);
   const [verifiedChecked, setVerifiedChecked] = useState<boolean>(verified);
 
-  console.log(call);
-
   const handleCityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     const id = +event.currentTarget.value;
     const { text } = cities.filter(item => item.id === id)[0];
@@ -99,7 +97,7 @@ export const Service: FC = () => {
   };
 
   const handleAddAdressClick = (id: number): void => {
-    dispatch(addAdress({ city: { id: 1, text: 'Алма-Ата' }, address: 'sfasdfasdf', id }));
+    dispatch(addAdress({ city: { ...city }, address: 'sfasdfasdf', id }));
   };
 
   return (
@@ -127,19 +125,21 @@ export const Service: FC = () => {
           <span>Адрес:</span>
         </div>
         <div>
-          {adresses.map(adress => (
+          {adresses.map((adress, index) => (
+            // const value = adresses.filter(item => item.id === index)[0];
+
             <div key={adress.id}>
               <Select
-                value={adress.id}
-                onChange={handleCallChange}
-                options={callMethod}
+                value={adresses[index].city.id}
+                onChange={handleCityChange}
+                options={cities}
               />
-              <input value={adress.address} />
+              {/* <input value={adress.address} /> */}
             </div>
           ))}
           <div>
             <button type="button" onClick={() => handleAddAdressClick(adresses.length)}>
-              sdfadf
+              Добавить
             </button>
           </div>
         </div>
