@@ -2,12 +2,12 @@ export interface ITicket {
   addresses: IAddress[];
   city: ICity;
   description: string;
-  has_photo: boolean; // С фото
-  has_review: boolean; // С отзывами
-  call: boolean; // Позвонить = true, Написать в чате = false
+  has_photo: boolean;
+  has_review: boolean;
+  call: boolean;
   price_to: number | null;
-  verified_only: boolean; // Личность подтверждена
-  work_unit: IWorkUnit | null; // Id из “За все работу”
+  verified_only: boolean;
+  work_unit: IWorkUnit | null;
 }
 
 export interface IAddress {
