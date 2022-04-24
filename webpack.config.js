@@ -18,6 +18,8 @@ module.exports = {
       consts: path.resolve(__dirname, './src/consts'),
       hooks: path.resolve(__dirname, './src/hooks'),
       selectors: path.resolve(__dirname, './src/selectors'),
+      assets: path.resolve(__dirname, './src/assets'),
+      enums: path.resolve(__dirname, './src/enums'),
     },
   },
   output: {

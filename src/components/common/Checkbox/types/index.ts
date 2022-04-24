@@ -1,7 +1,7 @@
-import { ChangeEvent } from 'react';
+import { AnyAction } from 'redux';
 
 export interface ChecboxProps {
-  checked: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  stateValue: boolean;
+  actionCreator: (value: boolean) => AnyAction;
   label: string;
 }

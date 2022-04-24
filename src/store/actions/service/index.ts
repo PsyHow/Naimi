@@ -8,4 +8,7 @@ export {
   hasReview,
   isVerified,
   addAdress,
+  changeAdressCity,
+  deleteAdress,
+  setAddress,
 } from './service';

@@ -1,7 +1,9 @@
-import { ChangeEvent } from 'react';
+import { AnyAction } from 'redux';
+
+import { IUni } from 'store/types';
 
 export interface SelectProps {
-  value: number;
-  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   options: { id: number; text: string }[];
+  stateValue: IUni | boolean;
+  actionCreator: (value: any) => AnyAction;
 }

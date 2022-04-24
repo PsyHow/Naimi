@@ -1,13 +1,33 @@
 .container {
-    width: 100%;
+    width: 90vw;
     height: 100%;
     flex-direction: column;
+    align-self: center;
+    border: 1px solid gray;
+    margin: 40px 0;
+    border-radius: 5px;
+    background-color: #eaf4fd;
+
+    & select {
+        width: 83%;
+        cursor: pointer;
+    }
+
+    & button {
+        margin-top: 5px;
+        width: 217px;
+        height: 40px;
+        background: #ffffff;
+        border: 1px solid #0a84ff;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
     .header {
         min-height: 65px;
         display: flex;
         align-items: center;
-        margin: 0 16px;
+        margin-left: 16px;
 
         & span {
             font-weight: 600;
@@ -16,107 +36,12 @@
         }
     }
 
-    & span {
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-    }
-
-    .descriptionBlock {
-        height: 128px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        margin: 0 16px;
-
-        .leftTitleBlock {
-            width: 20%;
-        }
-
-        & textarea {
-            width: 75%;
-            height: 100px;
-            resize: none;
-            padding: 10px 16px;
-            border: 1px solid #c7c7c7;
-            border-radius: 4px;
-        }
-    }
-
-    .citySelect {
-        width: 100%;
-        height: 54px;
-        display: flex;
-        align-items: center;
-        margin: 0 16px;
-
-        .leftTitleBlock {
-            width: 20%;
-        }
-
-        & select {
-            width: 77.5%;
-        }
-    }
-
-    .adress {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        margin: 0 16px;
-        
-        .leftTitleBlock {
-            width: 20%;
-        }
-    }
-
-    .callMethod {
-        width: 100%;
-        height: 54px;
-        display: flex;
-        align-items: center;
-        margin: 0 16px;
-
-        .leftTitleBlock {
-            width: 20%;
-        }
-
-        & select {
-            width: 77.5%;
-            height: 40px;
-            border: 1px solid #c7c7c7;
-            border-radius: 4px;
-            padding: 2px;
-            padding: 10px 16px;
-        }
-    }
-
-    .price {
-        width: 100%;
-        height: 54px;
-        display: flex;
-        align-items: center;
-        margin: 0 16px;
-
-        .leftTitleBlock {
-            width: 20%;
-        }
-
-        .selectPrice {
-            width: 77.5%;
+    .AdresessList {
+        .adressItem {
             display: flex;
             justify-content: space-between;
-
-            & input {
-                width: 45%;
-                height: 18px;
-                padding: 0;
-                border: 1px solid #c7c7c7;
-                border-radius: 4px;
-                padding: 10px 16px;
-            }
+            align-items: center;
+            width: 83%;
 
             & select {
                 width: 45%;
@@ -125,24 +50,39 @@
                 border-radius: 4px;
                 padding: 2px;
                 padding: 10px 16px;
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            & input {
+                width: 45%;
+                height: 40px;
+                background: #ffffff;
+                border: 1px solid #c7c7c7;
+                box-sizing: border-box;
+                border-radius: 4px;
+            }
+
+            & img {
+                height: 20px;
+                cursor: pointer;
             }
         }
     }
 
-    .requirements {
-        width: 100%;
-        height: 54px;
+    .price {
+        width: 65.57% !important;
         display: flex;
-        align-items: center;
-        margin: 0 16px;
+        justify-content: space-between;
 
-        .leftTitleBlock {
-            width: 20%;
+        & select {
+            width: 49%;
         }
+    }
 
-        .checkRequirements {
-            width: 77.5%;
-            display: flex;
-        }
+    .requirements {
+        display: flex;
     }
 }

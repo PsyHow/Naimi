@@ -1,15 +1,15 @@
 import { cities, payMethod } from 'consts';
 import { ServiceTypes } from 'store/reducers/types';
-import { ITicket } from 'store/types';
+import { IAddress, ITicket } from 'store/types';
 
 const initialState = {
-  addresses: [],
+  addresses: [] as IAddress[],
   city: cities[0],
   description: '',
   has_photo: true,
   has_review: false,
   call: true,
-  price_to: null as number | null,
+  price_to: 10000,
   verified_only: false,
   work_unit: payMethod[0],
 } as ITicket;
@@ -68,6 +68,32 @@ export const serviceReducer = (state = initialState, action: ServiceTypes): ITic
       return {
         ...state,
         addresses: [...state.addresses, action.payload],
+      };
+    }
+    case 'SERVICE/CHANGE_ADRESS_CITY': {
+      return {
+        ...state,
+        addresses: state.addresses.map(address =>
+          address.id === action.payload.id
+            ? { ...address, city: action.payload.value }
+            : address,
+        ),
+      };
+    }
+    case 'SERVICE/DELETE_ADRESS': {
+      return {
+        ...state,
+        addresses: state.addresses.filter(address => address.id !== action.payload),
+      };
+    }
+    case 'SERVICE/SET_ADDRESS': {
+      return {
+        ...state,
+        addresses: state.addresses.map(address =>
+          address.id === action.payload.id
+            ? { ...address, address: action.payload.value }
+            : address,
+        ),
       };
     }
     default:

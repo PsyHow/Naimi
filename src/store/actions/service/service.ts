@@ -1,4 +1,4 @@
-import { IAddress, ICity, IWorkUnit } from 'store/types';
+import { IAddress, IUni } from 'store/types';
 
 export const setDescptiption = (payload: string) =>
   ({
@@ -6,7 +6,7 @@ export const setDescptiption = (payload: string) =>
     payload,
   } as const);
 
-export const selectCityApplication = (payload: ICity) =>
+export const selectCityApplication = (payload: IUni) =>
   ({
     type: 'SERVICE/SELECT_CITY_APPLICATION',
     payload,
@@ -24,7 +24,7 @@ export const setPrice = (payload: number) =>
     payload,
   } as const);
 
-export const changeWorkUnit = (payload: IWorkUnit) =>
+export const changeWorkUnit = (payload: IUni) =>
   ({
     type: 'SERVICE/CHANGE_WORK_UNIT',
     payload,
@@ -52,4 +52,28 @@ export const addAdress = (payload: IAddress) =>
   ({
     type: 'SERVICE/ADD_ADRESS',
     payload,
+  } as const);
+
+export const changeAdressCity = (id: number, value: IUni) =>
+  ({
+    type: 'SERVICE/CHANGE_ADRESS_CITY',
+    payload: {
+      id,
+      value,
+    },
+  } as const);
+
+export const deleteAdress = (payload: number) =>
+  ({
+    type: 'SERVICE/DELETE_ADRESS',
+    payload,
+  } as const);
+
+export const setAddress = (id: number, value: string) =>
+  ({
+    type: 'SERVICE/SET_ADDRESS',
+    payload: {
+      id,
+      value,
+    },
   } as const);

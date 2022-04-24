@@ -1,0 +1,20 @@
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 1%;
+
+    .leftContent {
+        width: 20%;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .rightContent {
+        width: 79%;
+        height: 100%;
+        padding: 10px 0;
+    }
+}

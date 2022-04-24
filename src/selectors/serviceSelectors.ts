@@ -1,9 +1,9 @@
 import { AppRootState } from 'store';
-import { IAddress, ICity, IWorkUnit } from 'store/types';
+import { IAddress, IUni } from 'store/types';
 
-export const selectCity = (state: AppRootState): ICity => state.serviceReducer.city;
+export const selectCity = (state: AppRootState): IUni => state.serviceReducer.city;
 
-export const selectWorkUnit = (state: AppRootState): IWorkUnit =>
+export const selectWorkUnit = (state: AppRootState): IUni =>
   state.serviceReducer.work_unit;
 
 export const selectCallMethod = (state: AppRootState): boolean =>
@@ -20,3 +20,8 @@ export const selectIsVerified = (state: AppRootState): boolean =>
 
 export const selectAddresses = (state: AppRootState): IAddress[] =>
   state.serviceReducer.addresses;
+
+export const selectDescription = (state: AppRootState): string =>
+  state.serviceReducer.description;
+
+export const selectPrice = (state: AppRootState): number => state.serviceReducer.price_to;

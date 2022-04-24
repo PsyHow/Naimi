@@ -1,0 +1,1 @@
+export { vacancyReducer } from './vacancy';
