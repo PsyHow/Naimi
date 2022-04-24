@@ -40,44 +40,46 @@ export const ServiceContainer: FC = () => {
   const description = useSelector(selectDescription);
   const price = useSelector(selectPrice);
 
+  console.log(adresses);
+
   const [adressesValue, setAdressesValue] = useState<IAddress[]>(adresses);
 
   const mappedAdresses = adresses.map((adress, index) => {
+    const { id } = adresses[index];
+
     const handleAdressCityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
       const option = +event.currentTarget.value;
 
       const currentCity = cities.filter(citiesItem => citiesItem.id === option)[0];
 
       const changeCurrentCity = adressesValue.map(value =>
-        value.id === index ? { ...value, city: currentCity } : value,
+        value.id === id ? { ...value, city: currentCity } : value,
       );
 
       setAdressesValue(changeCurrentCity);
 
-      dispatch(changeAdressCity(index, currentCity));
+      dispatch(changeAdressCity(id, currentCity));
     };
 
     const handleAdressDeleteClick = (): void => {
-      const deleteAdressesItem = adressesValue.filter(current => current.id !== index);
+      const deleteAdressesItem = adressesValue.filter(current => current.id !== id);
 
       setAdressesValue(deleteAdressesItem);
-      dispatch(deleteAdress(index));
+      dispatch(deleteAdress(id));
     };
 
     const handleAddressChange = (event: ChangeEvent<HTMLInputElement>): void => {
       const addressValue = adressesValue.map(address =>
-        address.id === index
-          ? { ...address, address: event.currentTarget.value }
-          : address,
+        address.id === id ? { ...address, address: event.currentTarget.value } : address,
       );
 
       setAdressesValue(addressValue);
     };
 
     const handleAddressSaveBlur = (): void => {
-      const currentAddress = adressesValue.filter(value => value.id === index)[0].address;
+      const currentAddress = adressesValue.filter(value => value.id === id)[0].address;
 
-      dispatch(setAddress(index, currentAddress));
+      dispatch(setAddress(id, currentAddress));
     };
 
     return (
@@ -113,13 +115,12 @@ export const ServiceContainer: FC = () => {
   });
 
   const handleAddAdressClick = (): void => {
-    const nextState = [
-      ...adressesValue,
-      { id: adresses.length, address: '', city: { ...city } },
-    ];
+    const id = Math.random() * 1000;
+    const fixedId = +id.toFixed();
+    const nextState = [...adressesValue, { id: fixedId, address: '', city: { ...city } }];
 
     setAdressesValue(nextState);
-    dispatch(addAdress({ city: { ...city }, address: '', id: adresses.length }));
+    dispatch(addAdress({ city: { ...city }, address: '', id: fixedId }));
   };
 
   const changeButtonTitle =
