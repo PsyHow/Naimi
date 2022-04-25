@@ -39,41 +39,41 @@ export const VacancyContainer: FC = () => {
   const [adressesValue, setAdressesValue] = useState<IAddress[]>(addresses);
 
   const mappedAdresses = addresses.map((adress, index) => {
+    const { id } = addresses[index];
+
     const handleAdressCityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
       const option = +event.currentTarget.value;
 
       const currentCity = cities.filter(citiesItem => citiesItem.id === option)[0];
 
       const changeCurrentCity = adressesValue.map(value =>
-        value.id === index ? { ...value, city: currentCity } : value,
+        value.id === id ? { ...value, city: currentCity } : value,
       );
 
       setAdressesValue(changeCurrentCity);
 
-      dispatch(changeVacancyCiy(index, currentCity));
+      dispatch(changeVacancyCiy(id, currentCity));
     };
 
     const handleAdressDeleteClick = (): void => {
       const deleteAdressesItem = adressesValue.filter(current => current.id !== index);
 
       setAdressesValue(deleteAdressesItem);
-      dispatch(deleteVacancyAdress(index));
+      dispatch(deleteVacancyAdress(id));
     };
 
     const handleAddressChange = (event: ChangeEvent<HTMLInputElement>): void => {
       const addressValue = adressesValue.map(address =>
-        address.id === index
-          ? { ...address, address: event.currentTarget.value }
-          : address,
+        address.id === id ? { ...address, address: event.currentTarget.value } : address,
       );
 
       setAdressesValue(addressValue);
     };
 
     const handleAddressSaveBlur = (): void => {
-      const currentAddress = adressesValue.filter(value => value.id === index)[0].address;
+      const currentAddress = adressesValue.filter(value => value.id === id)[0].address;
 
-      dispatch(setVacancyAddress(index, currentAddress));
+      dispatch(setVacancyAddress(id, currentAddress));
     };
 
     return (
@@ -109,13 +109,13 @@ export const VacancyContainer: FC = () => {
   });
 
   const handleAddAdressClick = (): void => {
-    const nextState = [
-      ...adressesValue,
-      { id: addresses.length, address: '', city: { ...city } },
-    ];
+    const id = Math.random() * 1000;
+    const fixedId = +id.toFixed();
+
+    const nextState = [...adressesValue, { id: fixedId, address: '', city: { ...city } }];
 
     setAdressesValue(nextState);
-    dispatch(addVacancyAdress({ city: { ...city }, address: '', id: addresses.length }));
+    dispatch(addVacancyAdress({ city: { ...city }, address: '', id: fixedId }));
   };
 
   const changeButtonTitle =

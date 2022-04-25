@@ -40,8 +40,6 @@ export const ServiceContainer: FC = () => {
   const description = useSelector(selectDescription);
   const price = useSelector(selectPrice);
 
-  console.log(adresses);
-
   const [adressesValue, setAdressesValue] = useState<IAddress[]>(adresses);
 
   const mappedAdresses = adresses.map((adress, index) => {
