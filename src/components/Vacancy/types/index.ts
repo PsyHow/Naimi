@@ -1,14 +1,18 @@
-import { ReactElement } from 'react';
+import { ChangeEvent, ReactElement } from 'react';
 
-import { IUni } from 'store/types';
+import { IAddress, IUni } from 'store/types';
 
 export interface VacancyProps {
-  title: string;
-  description: string;
   city: IUni;
-  startPrice: number;
+  description: string;
   maxPrice: number;
+  startPrice: number;
+  title: string;
   experienceValue: IUni;
   changeButtonTitle: ReactElement;
-  mappedAdresses: ReactElement[];
+  addressesValue: IAddress[];
+  handleAdressCityChange: (event: ChangeEvent<HTMLSelectElement>, id: number) => void;
+  handleAdressDeleteClick: (id: number, index: number) => void;
+  handleAddressChange: (event: ChangeEvent<HTMLInputElement>, id: number) => void;
+  handleAddressSaveBlur: (id: number) => void;
 }

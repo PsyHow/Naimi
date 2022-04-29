@@ -1,1 +1,15 @@
-export { serviceReducer } from './service';
+export {
+  serviceReducer,
+  addAdress,
+  changeAdressCity,
+  changeCallMethod,
+  changeWorkUnit,
+  deleteAdress,
+  hasPhoto,
+  isVerified,
+  selectCityApplication,
+  setAddress,
+  setDescptiption,
+  setPrice,
+  hasReview,
+} from './service';

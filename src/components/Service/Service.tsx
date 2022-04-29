@@ -13,12 +13,12 @@ import {
   changeCallMethod,
   changeWorkUnit,
   hasPhoto,
-  hasReview,
   isVerified,
   selectCityApplication,
-  setDescptiption,
   setPrice,
-} from 'store/actions/service';
+  hasReview,
+  setDescptiption,
+} from 'store/reducers/service';
 
 export const Service: FC<ServiceProps> = memo(
   ({

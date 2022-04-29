@@ -1,88 +1,85 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { cities, experience } from 'consts';
-import { VacancyTypes } from 'store/reducers/types';
-import { IAddress, IUni, IVacancy } from 'store/types';
+import { IVacancy, IAddress, IUni } from 'store/types';
 
-const initialState = {
-  title: '',
-  addresses: [] as IAddress[],
-  city: cities[0],
-  description: '',
-  price_form: 100000,
-  price_to: 150000,
-  experience: experience[0] as IUni,
-} as IVacancy;
+const slice = createSlice({
+  name: 'service',
 
-export const vacancyReducer = (state = initialState, action: VacancyTypes): IVacancy => {
-  switch (action.type) {
-    case 'VACANCY/SET_VACANCY_TITLE': {
-      return {
-        ...state,
-        title: action.payload,
-      };
-    }
-    case 'VACANCY/SET_VACANCY_DESCRIPTION': {
-      return {
-        ...state,
-        description: action.payload,
-      };
-    }
-    case 'VACANCY/SET_START_PRICE_VALUE': {
-      return {
-        ...state,
-        price_form: action.payload,
-      };
-    }
-    case 'VACANCY/SET_MAX_PRICE_VALUE': {
-      return {
-        ...state,
-        price_to: action.payload,
-      };
-    }
-    case 'VACANCY/SET_EXPERIENCE': {
-      return {
-        ...state,
-        experience: action.payload,
-      };
-    }
-    case 'VACANCY/SET_VACANCY_CITY': {
-      return {
-        ...state,
-        city: action.payload,
-      };
-    }
-    case 'VACANCY/ADD_ADRESS': {
-      return {
-        ...state,
-        addresses: [...state.addresses, action.payload],
-      };
-    }
-    case 'VACANCY/SET_ADDRESS': {
-      return {
-        ...state,
-        addresses: state.addresses.map(address =>
-          address.id === action.payload.id
-            ? { ...address, address: action.payload.value }
-            : address,
-        ),
-      };
-    }
-    case 'VACANCY/DELETE_ADRESS': {
-      return {
-        ...state,
-        addresses: state.addresses.filter(address => address.id !== action.payload),
-      };
-    }
-    case 'VACANCY/CHANGE_ADRESS_CITY': {
-      return {
-        ...state,
-        addresses: state.addresses.map(address =>
-          address.id === action.payload.id
-            ? { ...address, city: action.payload.value }
-            : address,
-        ),
-      };
-    }
-    default:
-      return state;
-  }
-};
+  initialState: {
+    title: '',
+    addresses: [] as IAddress[],
+    city: cities[0],
+    description: '',
+    price_form: 100000,
+    price_to: 150000,
+    experience: experience[0] as IUni,
+  } as IVacancy,
+
+  reducers: {
+    setVacancyTitle(state, action: PayloadAction<string>) {
+      state.title = action.payload;
+    },
+
+    setVacancyDescription(state, action: PayloadAction<string>) {
+      state.description = action.payload;
+    },
+
+    setStartPriceValue(state, action: PayloadAction<number>) {
+      state.price_form = action.payload;
+    },
+
+    setMaxPriceValue(state, action: PayloadAction<number>) {
+      state.price_to = action.payload;
+    },
+
+    setExperience(state, action: PayloadAction<IUni>) {
+      state.experience = action.payload;
+    },
+
+    settVacancyCity(state, action: PayloadAction<IUni>) {
+      state.city = action.payload;
+    },
+
+    changeVacancyCiy(state, action: PayloadAction<{ id: number; value: IUni }>) {
+      const index = state.addresses.findIndex(f => f.id === action.payload.id);
+      if (index > -1) {
+        state.addresses[index].city = action.payload.value;
+      }
+    },
+
+    addVacancyAdress(state, action: PayloadAction<IAddress>) {
+      state.addresses.push(action.payload);
+    },
+
+    setVacancyAddress(state, action: PayloadAction<{ id: number; value: string }>) {
+      const index = state.addresses.findIndex(f => f.id === action.payload.id);
+      if (index > -1) {
+        state.addresses[index].address = action.payload.value;
+      }
+    },
+
+    deleteVacancyAdress(state, action: PayloadAction<number>) {
+      const index = state.addresses.findIndex(f => f.id === action.payload);
+
+      if (index > -1) {
+        state.addresses.splice(index, 1);
+      }
+    },
+  },
+});
+
+export const vacancyReducer = slice.reducer;
+
+export const {
+  addVacancyAdress,
+  changeVacancyCiy,
+  deleteVacancyAdress,
+  setExperience,
+  setMaxPriceValue,
+  setStartPriceValue,
+  setVacancyAddress,
+  setVacancyDescription,
+  setVacancyTitle,
+  settVacancyCity,
+} = slice.actions;

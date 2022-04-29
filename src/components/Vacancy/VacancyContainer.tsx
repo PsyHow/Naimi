@@ -1,12 +1,9 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useCallback, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import styles from './styles/vacancy.module.scss';
 import { Vacancy } from './Vacancy';
 
-import deleteIcon from 'assets/delete.png';
-import vector from 'assets/Vector.png';
 import { cities } from 'consts';
 import {
   selectExperience,
@@ -22,7 +19,7 @@ import {
   changeVacancyCiy,
   deleteVacancyAdress,
   setVacancyAddress,
-} from 'store/actions/vacancy';
+} from 'store/reducers/vacancy';
 import { IAddress } from 'store/types';
 
 export const VacancyContainer: FC = () => {
@@ -36,87 +33,67 @@ export const VacancyContainer: FC = () => {
   const city = useSelector(selectVacancyCity);
   const addresses = useSelector(selectVacancyAddresses);
 
-  const [adressesValue, setAdressesValue] = useState<IAddress[]>(addresses);
+  const [addressesValue, setAdressesValue] = useState<IAddress[]>(addresses);
 
-  const mappedAdresses = addresses.map((adress, index) => {
-    const { id } = addresses[index];
-
-    const handleAdressCityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+  const handleAdressCityChange = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>, id: number): void => {
       const option = +event.currentTarget.value;
 
       const currentCity = cities.filter(citiesItem => citiesItem.id === option)[0];
 
-      const changeCurrentCity = adressesValue.map(value =>
+      const changeCurrentCity = addressesValue.map(value =>
         value.id === id ? { ...value, city: currentCity } : value,
       );
 
       setAdressesValue(changeCurrentCity);
 
-      dispatch(changeVacancyCiy(id, currentCity));
-    };
+      dispatch(changeVacancyCiy({ id, value: currentCity }));
+    },
+    [addressesValue],
+  );
 
-    const handleAdressDeleteClick = (): void => {
-      const deleteAdressesItem = adressesValue.filter(current => current.id !== index);
+  const handleAdressDeleteClick = useCallback(
+    (id: number): void => {
+      const deleteAdressesItem = addressesValue.filter(current => current.id !== id);
 
       setAdressesValue(deleteAdressesItem);
       dispatch(deleteVacancyAdress(id));
-    };
+    },
+    [addressesValue],
+  );
 
-    const handleAddressChange = (event: ChangeEvent<HTMLInputElement>): void => {
-      const addressValue = adressesValue.map(address =>
+  const handleAddressChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>, id: number): void => {
+      const addressValue = addressesValue.map(address =>
         address.id === id ? { ...address, address: event.currentTarget.value } : address,
       );
 
       setAdressesValue(addressValue);
-    };
+    },
+    [addressesValue],
+  );
 
-    const handleAddressSaveBlur = (): void => {
-      const currentAddress = adressesValue.filter(value => value.id === id)[0].address;
+  const handleAddressSaveBlur = useCallback(
+    (id: number): void => {
+      const currentAddress = addressesValue.filter(value => value.id === id)[0].address;
 
-      dispatch(setVacancyAddress(id, currentAddress));
-    };
+      dispatch(setVacancyAddress({ id, value: currentAddress }));
+    },
+    [addressesValue],
+  );
 
-    return (
-      <div key={adress.id}>
-        <div className={styles.adressItem}>
-          <img alt="vector" src={vector} />
-
-          <select value={adressesValue[index].city.id} onChange={handleAdressCityChange}>
-            {cities.map(item => (
-              <option value={item.id} key={item.id}>
-                {item.text}
-              </option>
-            ))}
-          </select>
-
-          <input
-            value={adressesValue[index].address}
-            onChange={handleAddressChange}
-            onBlur={handleAddressSaveBlur}
-          />
-
-          <img
-            role="presentation"
-            alt="deleteIcon"
-            onKeyDown={handleAdressDeleteClick}
-            onClick={handleAdressDeleteClick}
-            src={deleteIcon}
-          />
-        </div>
-        <hr />
-      </div>
-    );
-  });
-
-  const handleAddAdressClick = (): void => {
+  const handleAddAdressClick = useCallback((): void => {
     const id = Math.random() * 1000;
     const fixedId = +id.toFixed();
 
-    const nextState = [...adressesValue, { id: fixedId, address: '', city: { ...city } }];
+    const nextState = [
+      ...addressesValue,
+      { id: fixedId, address: '', city: { ...city } },
+    ];
 
     setAdressesValue(nextState);
     dispatch(addVacancyAdress({ city: { ...city }, address: '', id: fixedId }));
-  };
+  }, [addressesValue]);
 
   const changeButtonTitle =
     addresses.length === 0 ? (
@@ -136,9 +113,13 @@ export const VacancyContainer: FC = () => {
       maxPrice={maxPrice}
       startPrice={startPrice}
       title={title}
+      addressesValue={addressesValue}
       experienceValue={experienceValue}
       changeButtonTitle={changeButtonTitle}
-      mappedAdresses={mappedAdresses}
+      handleAdressCityChange={handleAdressCityChange}
+      handleAdressDeleteClick={handleAdressDeleteClick}
+      handleAddressChange={handleAddressChange}
+      handleAddressSaveBlur={handleAddressSaveBlur}
     />
   );
 };

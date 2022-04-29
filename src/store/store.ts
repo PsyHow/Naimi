@@ -1,13 +1,18 @@
-import { combineReducers, createStore } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
 
 import { serviceReducer } from 'store/reducers/service';
 import { vacancyReducer } from 'store/reducers/vacancy';
 
-const reducers = combineReducers({
+const rootReducer = combineReducers({
   serviceReducer,
   vacancyReducer,
 });
 
-export const store = createStore(reducers);
+export const store = configureStore({
+  reducer: rootReducer,
+});
 
-export type AppRootState = ReturnType<typeof reducers>;
+export type AppDispatchType = typeof store.dispatch;
+export type AppRootState = ReturnType<RootReducerType>;
+export type RootReducerType = typeof rootReducer;

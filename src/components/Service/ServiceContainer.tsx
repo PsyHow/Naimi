@@ -24,7 +24,7 @@ import {
   changeAdressCity,
   deleteAdress,
   setAddress,
-} from 'store/actions/service';
+} from 'store/reducers/service';
 import { IAddress } from 'store/types';
 
 export const ServiceContainer: FC = () => {
@@ -56,7 +56,7 @@ export const ServiceContainer: FC = () => {
 
       setAdressesValue(changeCurrentCity);
 
-      dispatch(changeAdressCity(id, currentCity));
+      dispatch(changeAdressCity({ id, value: currentCity }));
     };
 
     const handleAdressDeleteClick = (): void => {
@@ -77,7 +77,7 @@ export const ServiceContainer: FC = () => {
     const handleAddressSaveBlur = (): void => {
       const currentAddress = adressesValue.filter(value => value.id === id)[0].address;
 
-      dispatch(setAddress(id, currentAddress));
+      dispatch(setAddress({ id, value: currentAddress }));
     };
 
     return (
