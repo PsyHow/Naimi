@@ -1,6 +1,4 @@
-import { ReactElement } from 'react';
-
-import { IUni } from 'store/types';
+import { IAddress, IUni } from 'store/types';
 
 export interface ServiceProps {
   description: string;
@@ -11,6 +9,7 @@ export interface ServiceProps {
   verified: boolean;
   photo: boolean;
   review: boolean;
-  changeButtonTitle: ReactElement;
-  mappedAdresses: ReactElement[];
+  adressesValue: IAddress[];
+  onAddressAddClick: () => void;
+  onAdressDeleteClick: (id: number) => void;
 }

@@ -1,44 +1,45 @@
-import { ChangeEvent, FC, memo, useState } from 'react';
+import { FC, memo } from 'react';
 
 import { useDispatch } from 'react-redux';
 
 import styles from './styles/select.module.scss';
 
 import { SelectProps } from 'components/common/Select/types';
-import { IUni } from 'store/types';
+import { useSelectValue } from 'hooks/useSelectValue';
 
-export const Select: FC<SelectProps> = memo(({ options, stateValue, actionCreator }) => {
-  const dispatch = useDispatch();
+export const Select: FC<SelectProps> = memo(
+  ({ options, stateValue, actionCreator, id }) => {
+    const dispatch = useDispatch();
 
-  const [value, setValue] = useState<IUni>(stateValue as IUni);
-  const [booleanValue, setBooleanValue] = useState<boolean>(stateValue as boolean);
+    const { valueSelect, handleCityChange } = useSelectValue(stateValue, options);
 
-  const handleCityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    const option = +event.currentTarget.value;
-    const currentOption = options.filter(item => item.id === option)[0];
+    const handleOnBlur = (): void => {
+      if (typeof stateValue === 'boolean') {
+        dispatch(actionCreator(valueSelect.booleanValue));
+      }
+      if (id) {
+        dispatch(actionCreator({ id, value: valueSelect.city }));
+      }
+      if (typeof stateValue !== 'boolean') {
+        dispatch(actionCreator(valueSelect.city));
+      }
+    };
 
-    if (typeof stateValue === 'boolean') {
-      setBooleanValue(prevState => !prevState);
-      dispatch(actionCreator(!!option));
-    } else {
-      setValue(currentOption);
-      dispatch(actionCreator(currentOption));
-    }
-  };
+    const mappedOptions = options.map(item => (
+      <option value={item.id} key={item.id}>
+        {item.text}
+      </option>
+    ));
 
-  const mappedOptions = options.map(item => (
-    <option value={item.id} key={item.id}>
-      {item.text}
-    </option>
-  ));
-
-  return (
-    <select
-      value={value.id || +booleanValue}
-      className={styles.select}
-      onChange={handleCityChange}
-    >
-      {mappedOptions}
-    </select>
-  );
-});
+    return (
+      <select
+        value={+valueSelect.booleanValue || valueSelect.city.id}
+        className={styles.select}
+        onChange={handleCityChange}
+        onBlur={handleOnBlur}
+      >
+        {mappedOptions}
+      </select>
+    );
+  },
+);

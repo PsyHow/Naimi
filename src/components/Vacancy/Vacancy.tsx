@@ -11,10 +11,12 @@ import { Textarea } from 'components/common/Textarea';
 import { VacancyProps } from 'components/Vacancy/types';
 import { cities, experience } from 'consts';
 import {
+  changeVacancyCiy,
   setExperience,
   setMaxPriceValue,
   setStartPriceValue,
   settVacancyCity,
+  setVacancyAddress,
   setVacancyDescription,
   setVacancyTitle,
 } from 'store/reducers/vacancy';
@@ -28,42 +30,39 @@ export const Vacancy: FC<VacancyProps> = memo(
     addressesValue,
     title,
     experienceValue,
-    changeButtonTitle,
-    handleAdressCityChange,
-    handleAdressDeleteClick,
-    handleAddressChange,
-    handleAddressSaveBlur,
+    onAdressDeleteClick,
+    onAddAdressClick,
   }) => {
     const mappedAdresses = addressesValue.map((adress, index) => {
       const { id } = addressesValue[index];
+
+      const handleAddressDeleteClick = (): void => {
+        onAdressDeleteClick(id, index);
+      };
 
       return (
         <div key={adress.id}>
           <div className={styles.adressItem}>
             <img alt="vector" src={vector} />
 
-            <select
-              value={addressesValue[index].city.id}
-              onChange={event => handleAdressCityChange(event, id)}
-            >
-              {cities.map(item => (
-                <option value={item.id} key={item.id}>
-                  {item.text}
-                </option>
-              ))}
-            </select>
+            <Select
+              stateValue={addressesValue[index].city}
+              id={id}
+              options={cities}
+              actionCreator={changeVacancyCiy}
+            />
 
-            <input
-              value={addressesValue[index].address}
-              onChange={event => handleAddressChange(event, id)}
-              onBlur={() => handleAddressSaveBlur(id)}
+            <Input
+              stateValue={addressesValue[index].address}
+              id={id}
+              actionCreator={setVacancyAddress}
             />
 
             <img
               role="presentation"
               alt="deleteIcon"
-              onKeyDown={() => handleAdressDeleteClick(id, index)}
-              onClick={() => handleAdressDeleteClick(id, index)}
+              onKeyDown={handleAddressDeleteClick}
+              onClick={handleAddressDeleteClick}
               src={deleteIcon}
             />
           </div>
@@ -71,6 +70,17 @@ export const Vacancy: FC<VacancyProps> = memo(
         </div>
       );
     });
+
+    const changeButtonTitle =
+      addressesValue.length === 0 ? (
+        <button type="button" onClick={onAddAdressClick}>
+          Добавить адрес
+        </button>
+      ) : (
+        <button type="button" onClick={onAddAdressClick}>
+          Добавить еще адрес
+        </button>
+      );
 
     return (
       <div className={styles.container}>

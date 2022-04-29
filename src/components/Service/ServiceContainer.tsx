@@ -1,13 +1,8 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import styles from './styles/service.module.scss';
-
-import deleteIcon from 'assets/delete.png';
-import vector from 'assets/Vector.png';
 import { Service } from 'components/Service';
-import { cities } from 'consts';
 import {
   selectAddresses,
   selectCallMethod,
@@ -19,12 +14,7 @@ import {
   selectPrice,
   selectWorkUnit,
 } from 'selectors/serviceSelectors';
-import {
-  addAdress,
-  changeAdressCity,
-  deleteAdress,
-  setAddress,
-} from 'store/reducers/service';
+import { addAdress, deleteAdress } from 'store/reducers/service';
 import { IAddress } from 'store/types';
 
 export const ServiceContainer: FC = () => {
@@ -42,95 +32,26 @@ export const ServiceContainer: FC = () => {
 
   const [adressesValue, setAdressesValue] = useState<IAddress[]>(adresses);
 
-  const mappedAdresses = adresses.map((adress, index) => {
-    const { id } = adresses[index];
-
-    const handleAdressCityChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-      const option = +event.currentTarget.value;
-
-      const currentCity = cities.filter(citiesItem => citiesItem.id === option)[0];
-
-      const changeCurrentCity = adressesValue.map(value =>
-        value.id === id ? { ...value, city: currentCity } : value,
-      );
-
-      setAdressesValue(changeCurrentCity);
-
-      dispatch(changeAdressCity({ id, value: currentCity }));
-    };
-
-    const handleAdressDeleteClick = (): void => {
+  const handleAdressDeleteClick = useCallback(
+    (id: number): void => {
       const deleteAdressesItem = adressesValue.filter(current => current.id !== id);
 
       setAdressesValue(deleteAdressesItem);
       dispatch(deleteAdress(id));
-    };
+    },
+    [adressesValue],
+  );
 
-    const handleAddressChange = (event: ChangeEvent<HTMLInputElement>): void => {
-      const addressValue = adressesValue.map(address =>
-        address.id === id ? { ...address, address: event.currentTarget.value } : address,
-      );
-
-      setAdressesValue(addressValue);
-    };
-
-    const handleAddressSaveBlur = (): void => {
-      const currentAddress = adressesValue.filter(value => value.id === id)[0].address;
-
-      dispatch(setAddress({ id, value: currentAddress }));
-    };
-
-    return (
-      <div key={adress.id}>
-        <div className={styles.adressItem}>
-          <img alt="vector" src={vector} />
-
-          <select value={adressesValue[index].city.id} onChange={handleAdressCityChange}>
-            {cities.map(item => (
-              <option value={item.id} key={item.id}>
-                {item.text}
-              </option>
-            ))}
-          </select>
-
-          <input
-            value={adressesValue[index].address}
-            onChange={handleAddressChange}
-            onBlur={handleAddressSaveBlur}
-          />
-
-          <img
-            role="presentation"
-            alt="deleteIcon"
-            onKeyDown={handleAdressDeleteClick}
-            onClick={handleAdressDeleteClick}
-            src={deleteIcon}
-          />
-        </div>
-        <hr />
-      </div>
-    );
-  });
-
-  const handleAddAdressClick = (): void => {
+  const handleAddressAddClick = useCallback((): void => {
     const id = Math.random() * 1000;
     const fixedId = +id.toFixed();
+
     const nextState = [...adressesValue, { id: fixedId, address: '', city: { ...city } }];
 
     setAdressesValue(nextState);
-    dispatch(addAdress({ city: { ...city }, address: '', id: fixedId }));
-  };
 
-  const changeButtonTitle =
-    adresses.length === 0 ? (
-      <button type="button" onClick={handleAddAdressClick}>
-        Добавить адрес
-      </button>
-    ) : (
-      <button type="button" onClick={handleAddAdressClick}>
-        Добавить еще адрес
-      </button>
-    );
+    dispatch(addAdress({ city: { ...city }, address: '', id: fixedId }));
+  }, [city, adressesValue]);
 
   return (
     <Service
@@ -142,8 +63,9 @@ export const ServiceContainer: FC = () => {
       verified={verified}
       photo={photo}
       review={review}
-      changeButtonTitle={changeButtonTitle}
-      mappedAdresses={mappedAdresses}
+      adressesValue={adressesValue}
+      onAddressAddClick={handleAddressAddClick}
+      onAdressDeleteClick={handleAdressDeleteClick}
     />
   );
 };

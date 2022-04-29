@@ -1,7 +1,19 @@
-import { AnyAction } from 'redux';
+import {
+  setStartPriceValue,
+  setVacancyAddress,
+  setVacancyTitle,
+} from 'store/reducers/vacancy';
 
 export interface InputProps {
-  stateValue: number | string;
-  actionCreator: (value: string | number) => AnyAction;
+  stateValue: string | number;
   pattern?: string;
+  id?: number;
+  actionCreator: (
+    value: { id: number; value: string } | number | string,
+  ) => ActionInputTypes;
 }
+
+type ActionInputTypes =
+  | ReturnType<typeof setVacancyAddress>
+  | ReturnType<typeof setVacancyTitle>
+  | ReturnType<typeof setStartPriceValue>;

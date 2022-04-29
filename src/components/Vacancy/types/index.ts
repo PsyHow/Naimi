@@ -1,5 +1,3 @@
-import { ChangeEvent, ReactElement } from 'react';
-
 import { IAddress, IUni } from 'store/types';
 
 export interface VacancyProps {
@@ -9,10 +7,7 @@ export interface VacancyProps {
   startPrice: number;
   title: string;
   experienceValue: IUni;
-  changeButtonTitle: ReactElement;
   addressesValue: IAddress[];
-  handleAdressCityChange: (event: ChangeEvent<HTMLSelectElement>, id: number) => void;
-  handleAdressDeleteClick: (id: number, index: number) => void;
-  handleAddressChange: (event: ChangeEvent<HTMLInputElement>, id: number) => void;
-  handleAddressSaveBlur: (id: number) => void;
+  onAdressDeleteClick: (id: number, index: number) => void;
+  onAddAdressClick: () => void;
 }

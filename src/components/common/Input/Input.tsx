@@ -1,36 +1,33 @@
-import { ChangeEvent, FC, memo, useState } from 'react';
+import { FC, memo } from 'react';
 
 import { useDispatch } from 'react-redux';
 
 import styles from './styles/input.module.scss';
 
 import { InputProps } from 'components/common/Input/types';
+import { useInputValue } from 'hooks/useInputValue';
 
-export const Input: FC<InputProps> = memo(({ pattern, stateValue, actionCreator }) => {
-  const dispatch = useDispatch();
+export const Input: FC<InputProps> = memo(
+  ({ pattern, stateValue, id, actionCreator }) => {
+    const dispatch = useDispatch();
 
-  const [value, setValue] = useState(stateValue);
+    const { valueInput, handleValueChange } = useInputValue(stateValue);
 
-  const handlePriceValueChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    if (pattern) {
-      return setValue(validate =>
-        event.target.validity.valid ? event.target.value : validate,
-      );
-    }
-    return setValue(event.currentTarget.value);
-  };
+    const handleBlur = (): void => {
+      if (id) {
+        dispatch(actionCreator({ id, value: valueInput as string }));
+      }
+      dispatch(actionCreator(valueInput));
+    };
 
-  const handlePriceBlur = (): void => {
-    dispatch(actionCreator(value));
-  };
-
-  return (
-    <input
-      pattern={pattern}
-      className={styles.input}
-      onBlur={handlePriceBlur}
-      value={value}
-      onChange={handlePriceValueChange}
-    />
-  );
-});
+    return (
+      <input
+        pattern={pattern}
+        className={styles.input}
+        onBlur={handleBlur}
+        value={valueInput}
+        onChange={handleValueChange}
+      />
+    );
+  },
+);

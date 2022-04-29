@@ -38,7 +38,7 @@ const slice = createSlice({
     },
 
     settVacancyCity(state, action: PayloadAction<IUni>) {
-      state.city = action.payload;
+      state.city = { ...action.payload };
     },
 
     changeVacancyCiy(state, action: PayloadAction<{ id: number; value: IUni }>) {
